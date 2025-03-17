@@ -27,10 +27,10 @@ fun SidebarButton(
             containerColor = Color.LightGray,
             contentColor = Color.Black
         ),
-        border = BorderStroke(2.dp, Color.Black),
+        border = BorderStroke(3.dp, Color.Black),
         modifier = modifier
             .fillMaxWidth()
-            .height(48.dp)
+            .height(60.dp)
     ) {
         Text(
             text = strText,

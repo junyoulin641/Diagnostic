@@ -2,7 +2,9 @@ package com.rtk.diagnostic.ui.screen
 
 import SidebarButton
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -22,12 +24,13 @@ fun NavigationSidebar(
 ) {
     Column(
         modifier = modifier
-            .padding(vertical = 16.dp)
             .background(Color.White)
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
         items.forEach { item ->
             SidebarButton(
-                strText = item.title,
+                strText = item.strTitle,
                 onClick = {onItemSelected(item) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -44,7 +47,10 @@ fun NavigationSidebarWithBackgroundPreview() {
             items = listOf(
                 NavigationItem("Version information"),
                 NavigationItem("GPS information"),
-                NavigationItem("NMEA information")
+                NavigationItem("NMEA information"),
+                NavigationItem("Tone display"),
+                NavigationItem("Sensor value"),
+                NavigationItem("Touch panel confirm"),
             ),
             onItemSelected = {}
         )
