@@ -21,7 +21,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.rtk.diagnostic.data.NavigationItem
 
 @Composable
-fun MainMenu() {
+fun MainMenu(onToneDisplaySelected: () -> Unit = {}) {
     val navigationItems = listOf(
         NavigationItem(strTitle = "Version information"),
         NavigationItem(strTitle = "GPS information"),
@@ -44,12 +44,22 @@ fun MainMenu() {
         )
         onDispose { }
     }
-    Row(modifier = Modifier.fillMaxSize()
+    Row(modifier = Modifier
+        .fillMaxSize()
         .background(Color.Black))
     {
         NavigationSidebar(
             items = navigationItems,
-            onItemSelected = { item -> selectedItem = item },
+            onItemSelected = { item ->
+                if (item.strTitle == "Tone display")
+                {
+                    onToneDisplaySelected()
+                }
+                else
+                {
+                    selectedItem = item
+                }
+            },
             modifier = Modifier
                 .width(250.dp)
                 .fillMaxHeight()
