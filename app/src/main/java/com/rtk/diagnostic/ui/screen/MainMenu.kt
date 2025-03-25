@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,11 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.rtk.diagnostic.data.NavigationItem
 
 @Composable
-fun MainMenu(onToneDisplaySelected: () -> Unit = {}) {
+fun MainMenu(onFullScreenSelected: (String)  -> Unit = {}) {
     val navigationItems = listOf(
         NavigationItem(strTitle = "Version information"),
         NavigationItem(strTitle = "GPS information"),
@@ -31,19 +29,6 @@ fun MainMenu(onToneDisplaySelected: () -> Unit = {}) {
         NavigationItem(strTitle = "Touch panel confirm")
     )
     var selectedItem by remember { mutableStateOf<NavigationItem?>(null) }
-    val systemUiController = rememberSystemUiController()
-    DisposableEffect(systemUiController)
-    {
-        systemUiController.setStatusBarColor(
-            color = Color.Black,
-            darkIcons = false
-        )
-        systemUiController.setNavigationBarColor(
-            color = Color.Black,
-            darkIcons = false
-        )
-        onDispose { }
-    }
     Row(modifier = Modifier
         .fillMaxSize()
         .background(Color.Black))
@@ -51,13 +36,9 @@ fun MainMenu(onToneDisplaySelected: () -> Unit = {}) {
         NavigationSidebar(
             items = navigationItems,
             onItemSelected = { item ->
-                if (item.strTitle == "Tone display")
-                {
-                    onToneDisplaySelected()
-                }
-                else
-                {
-                    selectedItem = item
+                when (item.strTitle) {
+                    "Tone display", "Touch panel confirm" -> onFullScreenSelected(item.strTitle) // 触发回调
+                    else -> selectedItem = item
                 }
             },
             modifier = Modifier

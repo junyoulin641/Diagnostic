@@ -132,14 +132,6 @@ fun FullColorPattern(color: Color) {
             .background(color)
     )
 }
-@Preview(showBackground = true, name = "Tone Screen - 主界面",widthDp = 850, heightDp = 530)
-@Composable
-fun ToneScreenPreview() {
-    MaterialTheme {
-        ToneScreen()
-    }
-}
-
 @Preview(showBackground = true, name = "Color bar Screen",widthDp = 850, heightDp = 530)
 @Composable
 fun ColorBarsPatternPreview() {
