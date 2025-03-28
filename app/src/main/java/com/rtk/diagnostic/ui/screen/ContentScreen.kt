@@ -1,7 +1,6 @@
 package com.rtk.diagnostic.ui.screen
 
 import GPSScreen
-import GPSScreenWithTwoColumns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,7 @@ fun ContentScreen(navigationItem: NavigationItem) {
     ) {
         when (navigationItem.strTitle) {
             "Version information" -> VersionScreen()
-            "GPS information" -> GPSScreenWithTwoColumns()
+            "GPS information" -> GPSScreen()
             "NMEA information" -> NMEAScreen()
             "Tone display" -> ToneScreen()
             "Sensor value" -> SensorScreen()

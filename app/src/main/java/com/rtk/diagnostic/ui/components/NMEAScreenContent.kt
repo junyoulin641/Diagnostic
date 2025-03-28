@@ -2,6 +2,7 @@ package com.rtk.diagnostic.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,40 +31,36 @@ fun NMEAScreenContent(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        if (strNmeaData.isNotEmpty())
-        {
-            Text(
-                text = strNmeaData,
-                color = Color.White,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Start,
-                modifier= Modifier
-                    .padding(start = 5.dp)
-            )
-        }
-        else
-        {
-            Text(
-                text = "No Singnal",
-                color = Color.White,
-                style = MaterialTheme.typography.titleLarge,
-                modifier= Modifier
-                    .align(Alignment.Center)
-            )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 70.dp) // 為按鈕預留空間
+        ){
+            if (strNmeaData.isNotEmpty())
+            {
+                Text(
+                    text = strNmeaData,
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(start = 5.dp)
+                )
+            }
         }
         Row(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(bottom = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ){
+        ) {
             DiagnosticButton(
-                text ="Start",
-                onClick=onControlClick
+                text = "Start",
+                onClick = onControlClick
             )
             DiagnosticButton(
-                text ="Log on",
-                onClick=onLogClick
+                text = "Log on",
+                onClick = onLogClick
             )
         }
     }

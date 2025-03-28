@@ -33,7 +33,6 @@ fun RequestLocationPermission(
     onPermissionDenied: () -> Unit
 ) {
     var bRequestPermission by remember { mutableStateOf(true) }
-
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->

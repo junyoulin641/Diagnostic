@@ -46,6 +46,11 @@ fun ToneScreen(onBackPressed: () -> Unit = {}) {
             BLACK_WITH_RED_BORDER -> onBackPressed()
         }
     }
+    DisposableEffect(Unit) {
+        onDispose {
+            currentMode = ColorTestMode.COLOR_BARS
+        }
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()

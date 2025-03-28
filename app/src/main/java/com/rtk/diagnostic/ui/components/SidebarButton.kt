@@ -1,3 +1,5 @@
+package com.rtk.diagnostic.ui.components
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

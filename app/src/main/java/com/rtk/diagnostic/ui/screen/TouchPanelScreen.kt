@@ -52,7 +52,7 @@ fun TouchPanelScreen(onBackPressed: () -> Unit = {}) {
             color = Color.White,
             fontSize = 16.sp,
             modifier = Modifier
-                .align(Alignment.BottomStart)
+                .align(Alignment.BottomEnd)
                 .padding(16.dp)
         )
         CircleSquareIcon(

@@ -2,6 +2,7 @@ package com.rtk.diagnostic.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -24,58 +25,55 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rtk.diagnostic.ui.components.NMEAScreenContent
 import com.rtk.diagnostic.utils.LocationPermissionHandler
 import com.rtk.diagnostic.utils.RequestLocationPermission
-import com.rtk.diagnostic.viewmodel.NMEAViewModel
+import com.rtk.diagnostic.viewmodel.GpsViewModel
 
 @Composable
 fun NMEAScreen()
 {
-    val viewModel: NMEAViewModel = viewModel()
-    val strNmeaData by viewModel.strNmeaData.collectAsState("")
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val locationPermissionHandler = remember { LocationPermissionHandler(context) }
-    var hasPermission by remember { mutableStateOf(locationPermissionHandler.hasLocationPermission()) }
-    var isGpsEnabled by remember { mutableStateOf(locationPermissionHandler.isGpsEnabled()) }
-    if (!isGpsEnabled && !hasPermission)
-    {
-        RequestLocationPermission(
-            onPermissionGranted =
-            {
-                hasPermission = true
-                viewModel.startNmeaListening()
-            },
-            onPermissionDenied =
-            {
-                hasPermission = false
-            }
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "You should allow app to permission your location.",
-                color = Color.White,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-    }
-    else
-    {
-        DisposableEffect(lifecycleOwner) {
+    val viewModel: GpsViewModel = viewModel()
+    val strNmeaData by viewModel.strNmeaData.collectAsState("")
+    var displayText by remember { mutableStateOf(strNmeaData) }
+    var bLocationPermission by remember { mutableStateOf(locationPermissionHandler.hasLocationPermission()) }
+    var bGpsEnabled by remember { mutableStateOf(locationPermissionHandler.isGpsEnabled()) }
+    DisposableEffect(lifecycleOwner, bLocationPermission, bGpsEnabled) {
+        if (bLocationPermission && bGpsEnabled)
+        {
             viewModel.startNmeaListening()
-            onDispose {
-                viewModel.stopNmeaListening()
-            }
         }
-        NMEAScreenContent(
-            strNmeaData = strNmeaData,
-            onControlClick = { },
-            onLogClick = { }
-        )
+        onDispose {
+        }
     }
+    when {
+        !bLocationPermission -> {
+            // Request location permission
+            RequestLocationPermission(
+                onPermissionGranted = {
+                    bLocationPermission = true
+                    bGpsEnabled = locationPermissionHandler.isGpsEnabled()
+                    if (bGpsEnabled)
+                    {
+                        viewModel.startNmeaListening()
+                    }
+                },
+                onPermissionDenied = {
+                    bLocationPermission = false
+                }
+            )
+            displayText="Location permission is required for NMEA data"
+        }
+        !bGpsEnabled ->{
+            displayText="Please enable location services in system settings"
+        }
+        else -> {
+            displayText = strNmeaData
+        }
+    }
+    NMEAScreenContent(
+        strNmeaData = displayText,
+        onControlClick = { },
+        onLogClick = { }
+    )
 }
