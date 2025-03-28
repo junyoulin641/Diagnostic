@@ -1,62 +1,81 @@
 package com.rtk.diagnostic.ui.screen
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.ui.graphics.RectangleShape
-import com.rtk.diagnostic.ui.components.DiagnosticButton
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rtk.diagnostic.ui.components.NMEAScreenContent
+import com.rtk.diagnostic.utils.LocationPermissionHandler
+import com.rtk.diagnostic.utils.RequestLocationPermission
+import com.rtk.diagnostic.viewmodel.NMEAViewModel
 
 @Composable
-fun NMEAScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Text(text = "Test",
-            color = Color.White,
+fun NMEAScreen()
+{
+    val viewModel: NMEAViewModel = viewModel()
+    val strNmeaData by viewModel.strNmeaData.collectAsState("")
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    val locationPermissionHandler = remember { LocationPermissionHandler(context) }
+    var hasPermission by remember { mutableStateOf(locationPermissionHandler.hasLocationPermission()) }
+    var isGpsEnabled by remember { mutableStateOf(locationPermissionHandler.isGpsEnabled()) }
+    if (!isGpsEnabled && !hasPermission)
+    {
+        RequestLocationPermission(
+            onPermissionGranted =
+            {
+                hasPermission = true
+                viewModel.startNmeaListening()
+            },
+            onPermissionDenied =
+            {
+                hasPermission = false
+            }
+        )
+        Box(
             modifier = Modifier
-                .align(Alignment.TopStart)
-            .padding(16.dp))
-        Row(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 10.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ){
-            DiagnosticButton(
-                text ="",
-                onClick={}
-            )
-            DiagnosticButton(
-                text ="",
-                onClick={}
+                .fillMaxSize()
+                .background(Color.Black),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "You should allow app to permission your location.",
+                color = Color.White,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(16.dp)
             )
         }
     }
-}
-
-@Preview(showBackground = true, widthDp = 850, heightDp = 530)
-@Composable
-fun NMEAScreenPreview()
-{
-    MaterialTheme {
-        Surface(color = Color.Black) {
-            NMEAScreen()
+    else
+    {
+        DisposableEffect(lifecycleOwner) {
+            viewModel.startNmeaListening()
+            onDispose {
+                viewModel.stopNmeaListening()
+            }
         }
+        NMEAScreenContent(
+            strNmeaData = strNmeaData,
+            onControlClick = { },
+            onLogClick = { }
+        )
     }
 }
