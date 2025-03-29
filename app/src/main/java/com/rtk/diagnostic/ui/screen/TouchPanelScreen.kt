@@ -26,7 +26,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rtk.diagnostic.ui.components.DiagnosticButton
-
+/**
+ * Screen for testing touch panel functionality
+ * Shows touch coordinates and provides touch targets across the screen
+ * @param onBackPressed Callback when the user presses the back button
+ */
 @Composable
 fun TouchPanelScreen(onBackPressed: () -> Unit = {}) {
     var touchPosition by remember { mutableStateOf(Offset.Zero) }
@@ -41,7 +45,7 @@ fun TouchPanelScreen(onBackPressed: () -> Unit = {}) {
             }
     ) {
         DiagnosticButton(
-            text ="Back",
+            strText ="Back",
             modifier = Modifier
                 .align(Alignment.TopEnd),
             onClick=onBackPressed
@@ -80,7 +84,10 @@ fun TouchPanelScreen(onBackPressed: () -> Unit = {}) {
         )
     }
 }
-
+/**
+ * Drawing of a touch target icon consisting of a circle with a square in the center
+ * @param modifier Modifier for positioning the icon
+ */
 @Composable
 fun CircleSquareIcon(modifier: Modifier = Modifier) {
     Canvas(modifier = modifier) {

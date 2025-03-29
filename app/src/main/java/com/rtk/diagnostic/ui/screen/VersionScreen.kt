@@ -34,6 +34,13 @@ fun VersionScreen() {
     }
 
 }
+
+/**
+ * Row component for displaying version information
+ * @param label The label text
+ * @param value The value text
+ */
+
 @Composable
 fun VersionRow(label: String, value: String) {
     Row(

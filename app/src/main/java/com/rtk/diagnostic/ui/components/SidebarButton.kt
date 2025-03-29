@@ -16,6 +16,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+/**
+ * Button used in the navigation sidebar
+ * @param strText Text to display in the button
+ * @param onClick Function to execute when button is clicked
+ * @param modifier Modifier for customizing the button appearance
+ */
 @Composable
 fun SidebarButton(
     strText: String,
@@ -51,7 +57,7 @@ fun ButtonPreview() {
     MaterialTheme {
         SidebarButton(
             strText = "Version information",
-            onClick = {  }
+            onClick = { }
         )
     }
 }

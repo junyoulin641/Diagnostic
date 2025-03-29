@@ -2,7 +2,6 @@ package com.rtk.diagnostic.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,7 +33,7 @@ fun NMEAScreenContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 70.dp) // 為按鈕預留空間
+                .padding(bottom = 70.dp)
         ){
             if (strNmeaData.isNotEmpty())
             {
@@ -55,11 +54,11 @@ fun NMEAScreenContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             DiagnosticButton(
-                text = "Start",
+                strText = "Start",
                 onClick = onControlClick
             )
             DiagnosticButton(
-                text = "Log on",
+                strText = "Log on",
                 onClick = onLogClick
             )
         }

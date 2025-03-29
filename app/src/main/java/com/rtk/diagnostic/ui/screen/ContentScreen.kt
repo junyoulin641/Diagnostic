@@ -10,6 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.rtk.diagnostic.ui.screen.GPSScreen
+/**
+ * Content screen that displays different screens based on navigation selection
+ * @param navigationItem The selected navigation item
+ */
 @Composable
 fun ContentScreen(navigationItem: NavigationItem) {
     Column(

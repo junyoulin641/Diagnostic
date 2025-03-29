@@ -15,7 +15,12 @@ import androidx.compose.ui.unit.dp
 import com.rtk.diagnostic.data.NavigationItem
 import com.rtk.diagnostic.ui.components.SidebarButton
 
-
+/**
+ * Navigation sidebar containing menu buttons
+ * @param items List of navigation items to display
+ * @param onItemSelected Callback when an item is selected
+ * @param modifier Modifier for customizing appearance
+ */
 @Composable
 fun NavigationSidebar(
     items: List<NavigationItem>,

@@ -28,7 +28,11 @@ enum class ColorTestMode
     FULL_BLACK,
     BLACK_WITH_RED_BORDER
 }
-
+/**
+ * Screen for testing display colors and tone quality
+ * Cycles through different test patterns on click
+ * @param onBackPressed Callback for when the user completes all test modes
+ */
 @Composable
 fun ToneScreen(onBackPressed: () -> Unit = {}) {
     var currentMode by remember { mutableStateOf(ColorTestMode.COLOR_BARS) }
@@ -60,6 +64,10 @@ fun ToneScreen(onBackPressed: () -> Unit = {}) {
         }
     }
 }
+/**
+ * Black screen pattern with red border
+ * Used to test screen edge display
+ */
 @Composable
 fun BlackWithRedBorderPattern() {
     Box(
@@ -69,6 +77,10 @@ fun BlackWithRedBorderPattern() {
             .border(BorderStroke(6.dp, Color.Red))
     )
 }
+/**
+ * Color bars test pattern
+ * Displays 8 color bars (black, blue, green, cyan, red, magenta, yellow, white)
+ */
 @Composable
 fun ColorBarsPattern() {
     Row(modifier = Modifier.fillMaxSize())
@@ -107,7 +119,10 @@ fun ColorBarsPattern() {
             .background(Color.White))
     }
 }
-
+/**
+ * Grayscale bars test pattern
+ * Displays 10 grayscale bars from black to white
+ */
 @Composable
 fun GrayscaleBarsPattern() {
     Row(modifier = Modifier.fillMaxSize())
@@ -123,6 +138,11 @@ fun GrayscaleBarsPattern() {
         }
     }
 }
+/**
+ * Full color test pattern
+ * Fills the entire screen with a single color
+ * @param color The color to display full screen
+ */
 
 @Composable
 fun FullColorPattern(color: Color) {

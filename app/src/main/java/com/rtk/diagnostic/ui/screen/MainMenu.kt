@@ -17,7 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rtk.diagnostic.data.NavigationItem
-
+/**
+ * Main menu screen with navigation sidebar and content area
+ * @param onFullScreenSelected Callback when a full-screen mode is selected
+ */
 @Composable
 fun MainMenu(onFullScreenSelected: (String)  -> Unit = {}) {
     val navigationItems = listOf(

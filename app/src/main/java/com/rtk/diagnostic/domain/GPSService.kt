@@ -13,9 +13,12 @@ import com.rtk.diagnostic.data.SatelliteInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class GPSService(private val context: Context)
-{
-    private val TAG = "GPSService"
+/**
+ * Service responsible for managing GPS/GNSS functionality
+ * @param context Application context needed for accessing system services
+ */
+class GPSService(private val context: Context) {
+    private val TAG = "GpsService"
     private val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     private val _strNmeaData = MutableStateFlow<String>("")
     val strNmeaData: StateFlow<String> = _strNmeaData
@@ -23,20 +26,44 @@ class GPSService(private val context: Context)
     private val gnssNmeaListener = GnssNmeaListener()
     private var bIsListening = false
     private val satellites = mutableListOf<SatelliteInfo>()
+
+    /**
+     * Location listener implementation for receiving GPS location updates
+     */
     private val locationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location)
-        {
+        /**
+         * Called when device location changes
+         * @param location The new location
+         */
+        override fun onLocationChanged(location: Location) {
             Log.d(TAG, "Location update: ${location.latitude}, ${location.longitude}")
         }
-        override fun onProviderEnabled(provider: String)
-        {
-            Log.d(TAG, "Provider enabled: $provider")
+
+        /**
+         * Called when a location provider is enabled
+         * @param strProvider The name of the provider
+         */
+        override fun onProviderEnabled(strProvider: String) {
+            Log.d(TAG, "Provider enabled: $strProvider")
         }
-        override fun onProviderDisabled(provider: String) {
-            Log.d(TAG, "Provider disabled: $provider")
+
+        /**
+         * Called when a location provider is disabled
+         * @param strProvider The name of the provider
+         */
+        override fun onProviderDisabled(strProvider: String) {
+            Log.d(TAG, "Provider disabled: $strProvider")
         }
     }
+
+    /**
+     * GNSS status callback for receiving satellite information
+     */
     private val gnssStatusCallback = object : GnssStatus.Callback() {
+        /**
+         * Called when satellite status changes
+         * @param status The updated GNSS status
+         */
         override fun onSatelliteStatusChanged(status: GnssStatus) {
             Log.d(TAG, "Satellite status updated: ${status.satelliteCount} satellites")
 
@@ -50,12 +77,15 @@ class GPSService(private val context: Context)
             }
         }
     }
-    fun startListening()
-    {
+
+    /**
+     * Start listening for GPS/GNSS updates
+     * Registers listeners for NMEA messages, GNSS status, and location updates
+     */
+    fun startListening() {
         if (bIsListening) return
 
-        try
-        {
+        try {
             locationManager.addNmeaListener(gnssNmeaListener, handler)
             locationManager.registerGnssStatusCallback(gnssStatusCallback, handler)
             locationManager.requestLocationUpdates(
@@ -66,19 +96,31 @@ class GPSService(private val context: Context)
                 Looper.getMainLooper()
             )
             bIsListening = true
-        } catch (e: SecurityException)
-        {
-            _strNmeaData.value=("Error: Location permission not granted")
+        } catch (e: SecurityException) {
+            _strNmeaData.value = "Error: Location permission not granted"
         }
     }
-    fun stopListening()
-    {
+
+    /**
+     * Stop listening for GPS/GNSS updates
+     * Unregisters all listeners
+     */
+    fun stopListening() {
         if (!bIsListening) return
         locationManager.removeNmeaListener(gnssNmeaListener)
         locationManager.removeUpdates(locationListener)
         bIsListening = false
     }
+
+    /**
+     * Inner class that listens for NMEA messages from the GPS
+     */
     private inner class GnssNmeaListener : OnNmeaMessageListener {
+        /**
+         * Called when a new NMEA message is received
+         * @param strNmea The NMEA message
+         * @param timestamp The timestamp when the message was received
+         */
         override fun onNmeaMessage(strNmea: String?, timestamp: Long) {
             strNmea?.let {
                 _strNmeaData.value = it

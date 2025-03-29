@@ -23,6 +23,10 @@ import com.rtk.diagnostic.utils.LocationPermissionHandler
 import com.rtk.diagnostic.utils.RequestLocationPermission
 import com.rtk.diagnostic.viewmodel.GpsViewModel
 
+/**
+ * Main Activity for the Diagnostic application
+ * Handles screen navigation and permission management
+ */
 class MainActivity : ComponentActivity() {
     private val viewModel: GpsViewModel by viewModels()
     private val selectedScreen = mutableStateOf<String?>(null)
@@ -30,6 +34,10 @@ class MainActivity : ComponentActivity() {
 
     private val bLocationPermission = mutableStateOf(false)
 
+    /**
+     * Initialize the activity and set up the UI
+     * @param savedInstanceState If non-null, this activity is being re-constructed from a previous saved state
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
@@ -47,8 +55,7 @@ class MainActivity : ComponentActivity() {
 
                 val lifecycleOwner = LocalLifecycleOwner.current
                 DisposableEffect(lifecycleOwner) {
-                    if (bLocationPermission.value)
-                    {
+                    if (bLocationPermission.value) {
                         viewModel.startNmeaListening()
                     }
                     onDispose {
@@ -98,7 +105,6 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 }
-
             }
         }
     }
