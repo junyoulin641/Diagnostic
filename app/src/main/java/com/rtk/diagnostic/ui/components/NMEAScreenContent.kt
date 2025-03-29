@@ -41,7 +41,7 @@ fun NMEAScreenContent(
                 Text(
                     text = strNmeaData,
                     color = Color.White,
-                    fontSize = 14.sp,
+                    fontSize = 15.sp,
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .padding(start = 5.dp)

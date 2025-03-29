@@ -1,10 +1,5 @@
 package com.rtk.diagnostic.ui.screen
 
-import android.app.Activity
-import android.os.Handler
-import android.os.Looper
-import android.view.View
-import android.view.WindowManager
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

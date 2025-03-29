@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,14 +42,16 @@ fun TouchPanelScreen(onBackPressed: () -> Unit = {}) {
     ) {
         DiagnosticButton(
             text ="Back",
+            modifier = Modifier
+                .align(Alignment.TopEnd),
             onClick=onBackPressed
         )
         Text(
             text = "Touch panel confimation (${touchPosition.x.toInt()},${touchPosition.y.toInt()})",
             color = Color.White,
-            fontSize = 16.sp,
+            fontSize = 15.sp,
             modifier = Modifier
-                .align(Alignment.BottomEnd)
+                .align(Alignment.BottomStart)
                 .padding(16.dp)
         )
         CircleSquareIcon(

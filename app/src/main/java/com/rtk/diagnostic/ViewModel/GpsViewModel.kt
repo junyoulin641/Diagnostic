@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.rtk.diagnostic.data.GpsInformation
-import com.rtk.diagnostic.domain.NMEAService
+import com.rtk.diagnostic.domain.GPSService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class GpsViewModel(application: Application) : AndroidViewModel(application)
 {
     private val TAG = "NMEAViewModel"
-    private val nmeaService = NMEAService(application.applicationContext)
+    private val GPSService = GPSService(application.applicationContext)
     private val _strDisplayNmeaData = MutableStateFlow<String>("")
     val strNmeaData: StateFlow<String> = _strDisplayNmeaData
     private val _listGpsInformation = MutableStateFlow(GpsInformation())
@@ -23,7 +23,7 @@ class GpsViewModel(application: Application) : AndroidViewModel(application)
     private val iMaxMessages = 18
     init {
         viewModelScope.launch {
-            nmeaService.strNmeaData.collect { strMessage ->
+            GPSService.strNmeaData.collect { strMessage ->
                 if (strMessage.isNotEmpty())
                 {
                     addNmeaMessage(strMessage)
@@ -36,11 +36,11 @@ class GpsViewModel(application: Application) : AndroidViewModel(application)
     }
     fun startNmeaListening()
     {
-        nmeaService.startListening()
+        GPSService.startListening()
     }
     fun stopNmeaListening()
     {
-        nmeaService.stopListening()
+        GPSService.stopListening()
     }
 
     fun clearNmeaData()
@@ -49,9 +49,9 @@ class GpsViewModel(application: Application) : AndroidViewModel(application)
         updateDisplayText()
     }
 
-    private fun addNmeaMessage(strmessage: String)
+    private fun addNmeaMessage(strMessage: String)
     {
-        strNmeaMessages.add(strmessage)
+        strNmeaMessages.add(strMessage)
         if (strNmeaMessages.size > iMaxMessages)
         {
             strNmeaMessages.removeAt(0)

@@ -24,7 +24,7 @@ fun DiagnosticButton(
             containerColor = Color.LightGray
         ),
         shape = RectangleShape,
-        modifier = Modifier
+        modifier = modifier
             .width(100.dp)
             .height(45.dp)
     ) {
